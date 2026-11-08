@@ -6,6 +6,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     private let settings: AppSettings
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
+    private let autoClose = PopoverAutoClose()
 
     init(settings: AppSettings) {
         self.settings = settings
@@ -62,6 +63,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     }
 
     func popoverDidClose(_ notification: Notification) {
+        autoClose.stop()
         updateVisibility()
     }
 
@@ -77,6 +79,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         guard let button = statusItem?.button else { return }
         NSApp.activate()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        autoClose.start(popover: popover, anchor: button)
     }
 
     private func updateVisibility() {
