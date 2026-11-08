@@ -12,3 +12,9 @@ CLAUDE.md
 # macOS
 .DS_Store
 xcuserdata/
+
+# Local screenshots
+Screenshot*.png
+
+# Local design drafts
+Gemini_Generated_Image*.jpg
