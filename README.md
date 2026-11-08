@@ -10,7 +10,7 @@ It works by drawing a pure black overlay in the two bottom corners. On a mini-LE
 - Apple style continuous curve (squircle)
 - Corners stay visible while swiping between desktops and over full screen apps
 - Menu bar popover with an on/off switch, a corner radius slider (8 to 40 pt) with live preview, launch at login, and an option to hide the menu bar icon
-- Very light: about 340 KB on disk, 0% CPU while idle, around 15 MB of memory at start and around 35 MB after the settings have been opened
+- Very light: about 2 MB on disk (mostly the app icon), 0% CPU while idle, around 15 MB of memory at start and around 35 MB after the settings have been opened
 
 ## Requirements
 
