@@ -1,43 +1,44 @@
 # RoundedCorners
 
-A small macOS menu bar app that makes the bottom corners of a MacBook's built-in screen look rounded, similar to the curved display corners on newer OLED laptops.
+App kecil di menu bar macOS yang membuat sudut bawah layar MacBook terlihat melengkung, mirip sudut layar laptop OLED terbaru.
 
-It works by drawing a pure black overlay in the two bottom corners. On a mini-LED or OLED panel, black pixels blend into the bezel, so the screen appears to have rounded corners. This is a visual effect only: the physical panel stays square.
+Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar mini-LED atau OLED, piksel hitam menyatu dengan bingkai layar, jadi sudutnya terlihat melengkung. Ini hanya efek visual, panel fisiknya tetap persegi.
 
-## Features
+## Fitur
 
-- Black overlay in the two bottom corners of the built-in display only, never on external monitors
-- Apple style continuous curve (squircle)
-- Corners stay visible while swiping between desktops and over full screen apps
-- Menu bar popover with an on/off switch, a corner radius slider (8 to 40 pt) with live preview, launch at login, and an option to hide the menu bar icon
-- Very light: about 2 MB on disk (mostly the app icon), 0% CPU while idle, around 15 MB of memory at start and around 35 MB after the settings have been opened
+- Lapisan hitam hanya di dua sudut bawah layar bawaan MacBook, tidak pernah di monitor eksternal
+- Bentuk lengkungan kontinu ala Apple (squircle), bukan busur lingkaran biasa
+- Sudut tetap terlihat saat berpindah desktop dengan swipe dan saat memakai app layar penuh
+- Popover di menu bar: tombol nyala/mati, slider radius sudut (8 sampai 40 pt) dengan pratinjau langsung, buka otomatis saat login, dan sembunyikan ikon menu bar
+- Popover menutup sendiri kalau kursor menjauh selama 2 detik
+- Sangat ringan: sekitar 2 MB (sebagian besar untuk ikon app), CPU 0% saat diam, memori sekitar 15 MB saat mulai dan sekitar 35 MB setelah pengaturan dibuka
 
-## Requirements
+## Kebutuhan
 
-- Mac with Apple Silicon and macOS 15 or later
-- Made for MacBooks with a notch and a mini-LED display. Tested on a 14 inch MacBook Pro (M5). Other Apple Silicon MacBooks should work, but on LCD screens the black corners can look slightly grey.
+- Mac dengan Apple Silicon dan macOS 15 atau lebih baru
+- Dibuat untuk MacBook dengan notch dan layar mini-LED. Sudah diuji di MacBook Pro 14 inci (M5). MacBook Apple Silicon lain seharusnya juga bisa, tetapi di layar LCD sudut hitamnya bisa terlihat sedikit abu-abu.
 
-## Install
+## Cara pasang
 
-1. Download `RoundedCorners-<version>.dmg` from the [Releases](../../releases) page.
-2. Open the DMG and drag `RoundedCorners` into `Applications`.
-3. Open the app. macOS will block it the first time, because it is not signed with a paid Apple Developer ID. To allow it:
-   - Open **System Settings > Privacy & Security**, scroll down and click **Open Anyway** next to the RoundedCorners message, or
-   - run this once in Terminal:
+1. Unduh `RoundedCorners-<versi>.dmg` dari halaman [Releases](../../releases).
+2. Buka DMG-nya, lalu seret `RoundedCorners` ke folder `Applications`.
+3. Buka app-nya. Saat pertama kali dibuka, macOS akan memblokirnya karena app ini tidak ditandatangani dengan Apple Developer ID berbayar. Untuk mengizinkannya:
+   - buka **System Settings > Privacy & Security**, gulir ke bawah, lalu klik **Open Anyway** di samping pesan RoundedCorners, atau
+   - jalankan perintah ini sekali di Terminal:
 
      ```bash
      xattr -dr com.apple.quarantine /Applications/RoundedCorners.app
      ```
 
-The app has no Dock icon. Click its icon in the menu bar to change settings or quit.
+App ini tidak muncul di Dock. Klik ikonnya di menu bar untuk mengubah pengaturan atau menutup app.
 
-If you hide the menu bar icon, open RoundedCorners again from Spotlight or Launchpad to bring the settings back.
+Kalau ikon menu bar disembunyikan, buka lagi RoundedCorners dari Spotlight atau Launchpad untuk memunculkan pengaturannya.
 
-On a crowded menu bar, macOS hides icons that do not fit next to the notch. If the icon seems to be missing, close a few other menu bar apps.
+Kalau menu bar penuh, macOS menyembunyikan ikon yang tidak muat di samping notch. Kalau ikonnya tidak kelihatan, tutup beberapa app menu bar lain.
 
-## Build from source
+## Build dari kode sumber
 
-Requires Xcode with Swift 6 and [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`). The Xcode project is generated from `project.yml` and is not checked in.
+Butuh Xcode dengan Swift 6 dan [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`). Project Xcode dibuat dari `project.yml` dan tidak disimpan di repo.
 
 ```bash
 xcodegen generate
@@ -45,50 +46,51 @@ xcodebuild -project RoundedCorners.xcodeproj -scheme RoundedCorners -configurati
 open build/Build/Products/Debug/RoundedCorners.app
 ```
 
-To create the DMG for a release:
+Untuk membuat DMG rilis:
 
 ```bash
 ./scripts/make-dmg.sh
 ```
 
-The DMG is written to `build/RoundedCorners-<version>.dmg`. The version comes from `CFBundleShortVersionString` in `project.yml`.
+DMG akan dibuat di `build/RoundedCorners-<versi>.dmg`. Nomor versinya diambil dari `CFBundleShortVersionString` di `project.yml`.
 
-## How it works
+## Cara kerja
 
-- Each corner is a tiny borderless window that ignores mouse clicks and sits above other windows. There is no full-screen window.
-- The curve comes from SwiftUI's `RoundedRectangle(cornerRadius:style: .continuous)`, so it matches the shape Apple uses. Because a continuous curve starts bending earlier than a circle, each window is about 1.53 times the radius.
-- The windows ask macOS to keep them out of screenshots and screen recordings.
-- The overlay only appears on the built-in display, detected with `CGDisplayIsBuiltin`, and follows resolution and scaling changes.
-- Settings are stored in `UserDefaults`. Launch at login uses `SMAppService` and its state is read from the system.
+- Setiap sudut adalah window kecil tanpa bingkai yang tidak menangkap klik dan berada di atas window lain. Tidak ada window selebar layar.
+- Lengkungannya diambil dari `RoundedRectangle(cornerRadius:style: .continuous)` milik SwiftUI, jadi bentuknya sama dengan yang dipakai Apple. Lengkungan kontinu mulai menekuk lebih awal daripada lingkaran, jadi setiap window berukuran sekitar 1,53 kali radius.
+- Window sudut meminta macOS agar tidak ikut terekam di screenshot dan rekaman layar.
+- Lapisan hanya muncul di layar bawaan MacBook (dideteksi dengan `CGDisplayIsBuiltin`) dan ikut menyesuaikan saat resolusi atau scaling diubah.
+- Pengaturan disimpan di `UserDefaults`. Buka otomatis saat login memakai `SMAppService`, dan statusnya dibaca langsung dari sistem.
 
-Constants for comparing variants:
+Konstanta untuk membandingkan varian:
 
-| Constant | File | Effect |
+| Konstanta | File | Fungsi |
 | --- | --- | --- |
-| `CornerStyle.current` | `Sources/Overlay/CornerStyle.swift` | `.continuous` or `.circular` |
-| `OverlaySpace.isEnabled` | `Sources/Overlay/OverlaySpace.swift` | Use the dedicated space described below |
+| `CornerStyle.current` | `Sources/Overlay/CornerStyle.swift` | `.continuous` (squircle) atau `.circular` (busur lingkaran) |
+| `OverlaySpace.isEnabled` | `Sources/Overlay/OverlaySpace.swift` | Memakai space khusus (lihat keterbatasan di bawah) |
+| `PopoverAutoClose.delay` | `Sources/MenuBar/PopoverAutoClose.swift` | Jeda sebelum popover menutup sendiri |
 
-## Known limitations
+## Keterbatasan
 
-- **Private API.** By default, macOS briefly hides windows that appear on all desktops while you swipe between them. To avoid this, the corner windows are placed in a dedicated window server space created with private SkyLight functions (`CGSSpaceCreate` and related). These are undocumented and may stop working in a future macOS update. They are loaded at runtime, so if they go missing the app keeps running and the corners simply flicker again during swipes.
-- **Not notarized.** Without a paid Apple Developer account the app cannot be notarized, so macOS asks for permission on first launch (see Install).
-- **Launch at login points to one copy.** It registers the copy of the app that turned it on. If you move to a different copy, turn the option off in the old one first, or remove the old entry in System Settings > General > Login Items.
-- **Hidden icon with launch at login.** If the icon is hidden and launch at login is on, opening the app from Spotlight while it is not running starts it silently. Open it a second time to see the settings.
-- **Screenshot exclusion is not guaranteed.** Recent macOS versions do not always honor the request to hide windows from screenshots.
-- **Top corners are not covered.** On notched MacBooks the top corners are already rounded by the panel.
+- **Memakai fungsi tersembunyi macOS.** Secara bawaan, macOS menyembunyikan sebentar window yang tampil di semua desktop saat kamu swipe antar-desktop. Untuk mencegahnya, window sudut ditaruh di space khusus yang dibuat dengan fungsi SkyLight yang tidak didokumentasikan (`CGSSpaceCreate` dan sejenisnya). Fungsi ini bisa berhenti bekerja di update macOS mendatang. Fungsinya dimuat saat app berjalan, jadi kalau suatu saat hilang, app tetap jalan dan sudutnya hanya berkedip lagi saat swipe.
+- **Belum dinotarisasi.** Tanpa akun Apple Developer berbayar, app tidak bisa dinotarisasi, jadi macOS meminta izin saat pertama kali dibuka (lihat Cara pasang).
+- **Buka otomatis saat login terikat ke satu salinan app.** Yang didaftarkan adalah salinan app tempat opsi itu dinyalakan. Kalau pindah ke salinan lain, matikan dulu opsinya di salinan lama, atau hapus entri lamanya di System Settings > General > Login Items.
+- **Ikon tersembunyi dan buka otomatis saat login.** Kalau ikon disembunyikan dan buka otomatis saat login menyala, membuka app dari Spotlight saat app belum berjalan akan menjalankannya diam-diam. Buka sekali lagi untuk melihat pengaturannya.
+- **Tidak dijamin hilang dari screenshot.** macOS versi terbaru tidak selalu menuruti permintaan untuk menyembunyikan window dari screenshot.
+- **Sudut atas tidak ditutup.** Di MacBook dengan notch, sudut atas layar sudah melengkung dari panelnya.
 
-## Project layout
+## Struktur project
 
 ```
-project.yml          XcodeGen spec (source of truth for the Xcode project)
+project.yml          spesifikasi XcodeGen (sumber utama project Xcode)
 scripts/
-  make-dmg.sh        Release build packed into a DMG
+  make-dmg.sh        build rilis lalu dibungkus jadi DMG
 Sources/
-  App/               entry point, app delegate, observation helper
-  Overlay/           corner windows, drawing, and the dedicated space
-  MenuBar/           menu bar item, settings popover, custom on/off switch
-  Settings/          stored settings and launch at login
+  App/               titik awal app, app delegate, pemantau perubahan
+  Overlay/           window sudut, penggambaran, dan space khusus
+  MenuBar/           ikon menu bar, popover pengaturan, tombol nyala/mati custom
+  Settings/          pengaturan tersimpan dan buka otomatis saat login
 Resources/
-  Info.plist         generated by XcodeGen from project.yml
-  Assets.xcassets
+  Info.plist         dibuat XcodeGen dari project.yml
+  Assets.xcassets    ikon app
 ```
