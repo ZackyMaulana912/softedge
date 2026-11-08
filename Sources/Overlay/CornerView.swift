@@ -3,14 +3,18 @@ import AppKit
 @MainActor
 final class CornerView: NSView {
     private let position: CornerPosition
-    private let radius: CGFloat
     private let style: CornerStyle
 
-    init(frame: NSRect, position: CornerPosition, radius: CGFloat, style: CornerStyle) {
+    var radius: CGFloat {
+        didSet { needsDisplay = true }
+    }
+
+    init(position: CornerPosition, radius: CGFloat, style: CornerStyle) {
         self.position = position
         self.radius = radius
         self.style = style
-        super.init(frame: frame)
+        super.init(frame: .zero)
+        autoresizingMask = [.width, .height]
     }
 
     @available(*, unavailable)
