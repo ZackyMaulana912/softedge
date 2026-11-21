@@ -20,6 +20,10 @@ final class OverlayController {
             name: NSApplication.didChangeScreenParametersNotification,
             object: nil
         )
+        let workspace = NSWorkspace.shared.notificationCenter
+        for name in [NSWorkspace.didWakeNotification, NSWorkspace.screensDidWakeNotification] {
+            workspace.addObserver(self, selector: #selector(systemWoke), name: name, object: nil)
+        }
         observeChanges { [weak self] in
             guard let self else { return }
             self.update(enabled: self.settings.isEnabled, radius: self.settings.radius)
@@ -28,6 +32,16 @@ final class OverlayController {
 
     @objc private func screensChanged(_ notification: Notification) {
         update(enabled: settings.isEnabled, radius: settings.radius)
+    }
+
+    /// After sleep the window server can rebuild its window lists, so bring the
+    /// corners back to the front and into the overlay space again.
+    @objc private func systemWoke(_ notification: Notification) {
+        update(enabled: settings.isEnabled, radius: settings.radius)
+        let all = Array(windows.values)
+        guard !all.isEmpty else { return }
+        all.forEach { $0.orderFrontRegardless() }
+        space?.add(all)
     }
 
     private func update(enabled: Bool, radius: Double) {
