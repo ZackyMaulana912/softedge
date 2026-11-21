@@ -8,6 +8,17 @@ BUILD_DIR="build"
 APP="$BUILD_DIR/Build/Products/Release/$APP_NAME.app"
 STAGING="$BUILD_DIR/dmg-staging"
 
+for tool in xcodegen xcodebuild; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        echo "Error: $tool tidak ditemukan." >&2
+        case "$tool" in
+            xcodegen) echo "Pasang dulu dengan: brew install xcodegen" >&2 ;;
+            xcodebuild) echo "Pasang Xcode dari App Store, lalu jalankan: sudo xcode-select -s /Applications/Xcode.app" >&2 ;;
+        esac
+        exit 1
+    fi
+done
+
 xcodegen generate
 xcodebuild -quiet -project "$APP_NAME.xcodeproj" -scheme "$APP_NAME" \
     -configuration Release -destination 'generic/platform=macOS' \
