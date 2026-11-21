@@ -15,11 +15,7 @@ struct SettingsView: View {
             Divider()
             optionsSection
             Divider()
-            HStack {
-                Spacer()
-                Button("Keluar dari RoundedCorners", action: onQuit)
-                    .keyboardShortcut("q")
-            }
+            AppFooter(onQuit: onQuit)
         }
         .padding(16)
         .frame(width: 300)
