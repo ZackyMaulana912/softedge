@@ -89,7 +89,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     private func updateIcon(enabled: Bool) {
         guard let button = statusItem?.button else { return }
         let name = enabled ? "rectangle.roundedbottom" : "rectangle"
-        let description = enabled ? "Rounded corners on" : "Rounded corners off"
+        let description = enabled ? "Sudut melengkung nyala" : "Sudut melengkung mati"
+        button.toolTip = "RoundedCorners: \(enabled ? "nyala" : "mati")"
 
         if let image = NSImage(systemSymbolName: name, accessibilityDescription: description) {
             image.isTemplate = true
