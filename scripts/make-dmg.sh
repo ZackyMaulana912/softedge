@@ -38,4 +38,9 @@ hdiutil create -quiet -volname "$APP_NAME" -srcfolder "$STAGING" -format ULMO "$
 rm -rf "$STAGING"
 hdiutil verify -quiet "$DMG"
 
+# Run from build/ so the .sha256 file names the DMG without a folder,
+# then `shasum -c` works next to the downloaded file.
+(cd "$BUILD_DIR" && shasum -a 256 "$(basename "$DMG")" > "$(basename "$DMG").sha256")
+
 echo "Created $DMG ($(du -h "$DMG" | cut -f1))"
+echo "SHA-256: $(cut -d' ' -f1 "$DMG.sha256")"
