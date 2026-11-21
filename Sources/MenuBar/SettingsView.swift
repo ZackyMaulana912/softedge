@@ -17,7 +17,7 @@ struct SettingsView: View {
             Divider()
             HStack {
                 Spacer()
-                Button("Quit RoundedCorners", action: onQuit)
+                Button("Keluar dari RoundedCorners", action: onQuit)
                     .keyboardShortcut("q")
             }
         }
@@ -29,7 +29,7 @@ struct SettingsView: View {
     private var radiusSection: some View {
         VStack(alignment: .leading, spacing: 6) {
             HStack {
-                Text("Corner radius")
+                Text("Radius sudut")
                 Spacer()
                 Text("\(Int(settings.radius)) pt")
                     .monospacedDigit()
@@ -42,7 +42,7 @@ struct SettingsView: View {
                 ),
                 in: AppSettings.radiusRange
             ) {
-                Text("Corner radius")
+                Text("Radius sudut")
             } minimumValueLabel: {
                 Text("\(Int(AppSettings.radiusRange.lowerBound))")
             } maximumValueLabel: {
@@ -58,7 +58,7 @@ struct SettingsView: View {
 
     private var optionsSection: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Toggle("Launch at login", isOn: launchBinding)
+            SwitchRow("Buka otomatis saat login", isOn: launchBinding)
 
             if let launchMessage {
                 Text(launchMessage)
@@ -67,23 +67,21 @@ struct SettingsView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             if launchNeedsApproval {
-                Button("Open Login Items Settings") {
+                Button("Buka Pengaturan Login Items") {
                     LaunchAtLogin.openSystemSettings()
                 }
                 .controlSize(.small)
             }
 
-            Toggle("Hide menu bar icon", isOn: $settings.hidesMenuBarIcon)
+            SwitchRow("Sembunyikan ikon menu bar", isOn: $settings.hidesMenuBarIcon)
 
             if settings.hidesMenuBarIcon {
-                Text("The icon disappears when this panel closes. Open RoundedCorners again from Spotlight or Launchpad to get back here.")
+                Text("Ikon hilang setelah panel ini ditutup. Buka lagi RoundedCorners dari Spotlight atau Launchpad untuk kembali ke sini.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
-        .toggleStyle(.switch)
-        .controlSize(.small)
     }
 
     private var launchBinding: Binding<Bool> {
@@ -94,7 +92,7 @@ struct SettingsView: View {
                     try LaunchAtLogin.setEnabled(newValue)
                     launchMessage = nil
                 } catch {
-                    launchMessage = "Could not change launch at login: \(error.localizedDescription)"
+                    launchMessage = "Gagal mengubah buka otomatis saat login: \(error.localizedDescription)"
                     NSLog("RoundedCorners: launch at login failed: %@", String(describing: error))
                 }
                 refreshLaunchAtLogin()
@@ -106,7 +104,7 @@ struct SettingsView: View {
         launchAtLogin = LaunchAtLogin.isEnabled
         launchNeedsApproval = LaunchAtLogin.needsApproval
         if launchNeedsApproval && launchMessage == nil {
-            launchMessage = "macOS needs your approval in System Settings, Login Items."
+            launchMessage = "macOS meminta persetujuanmu di System Settings > General > Login Items."
         }
     }
 }

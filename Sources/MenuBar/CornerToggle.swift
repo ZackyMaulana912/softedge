@@ -14,14 +14,15 @@ struct CornerToggle: View {
                 isOn.toggle()
             }
         } label: {
-            HStack(spacing: 14) {
+            HStack(spacing: 12) {
                 ScreenGlyph(isOn: isOn, radius: radius)
                     .frame(width: 60, height: 42)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("Rounded Corners")
+                    Text("Sudut Melengkung")
                         .font(.system(size: 13, weight: .semibold))
-                    Text(isOn ? "On" : "Off")
+                        .lineLimit(1)
+                    Text(isOn ? "Nyala" : "Mati")
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                 }
@@ -37,7 +38,7 @@ struct CornerToggle: View {
         }
         .buttonStyle(.plain)
         .accessibilityRepresentation {
-            Toggle("Rounded Corners", isOn: $isOn)
+            Toggle("Sudut Melengkung", isOn: $isOn)
         }
     }
 }
