@@ -16,7 +16,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     func install() {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
         item.button?.target = self
-        item.button?.action = #selector(togglePopover(_:))
+        item.button?.action = #selector(buttonClicked(_:))
+        item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
         statusItem = item
 
         let host = NSHostingController(rootView: SettingsView(settings: settings, onQuit: { NSApp.terminate(nil) }))
@@ -67,7 +68,14 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         updateVisibility()
     }
 
-    @objc private func togglePopover(_ sender: Any?) {
+    /// Left click opens the settings, right click (or Control click) flips the
+    /// effect on or off without opening anything.
+    @objc private func buttonClicked(_ sender: Any?) {
+        if let event = NSApp.currentEvent,
+           event.type == .rightMouseUp || event.modifierFlags.contains(.control) {
+            settings.isEnabled.toggle()
+            return
+        }
         if popover.isShown {
             popover.performClose(sender)
         } else {
@@ -90,7 +98,9 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         guard let button = statusItem?.button else { return }
         let name = enabled ? "rectangle.roundedbottom" : "rectangle"
         let description = enabled ? "Sudut melengkung nyala" : "Sudut melengkung mati"
-        button.toolTip = "RoundedCorners: \(enabled ? "nyala" : "mati")"
+        button.toolTip = enabled
+            ? "RoundedCorners: nyala\nKlik kanan untuk mematikan"
+            : "RoundedCorners: mati\nKlik kanan untuk menyalakan"
 
         if let image = NSImage(systemSymbolName: name, accessibilityDescription: description) {
             image.isTemplate = true
