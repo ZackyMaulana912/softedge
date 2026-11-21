@@ -4,12 +4,14 @@ import SwiftUI
 @MainActor
 final class StatusItemController: NSObject, NSPopoverDelegate {
     private let settings: AppSettings
+    private let status: OverlayStatus
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
     private let autoClose = PopoverAutoClose()
 
-    init(settings: AppSettings) {
+    init(settings: AppSettings, status: OverlayStatus) {
         self.settings = settings
+        self.status = status
         super.init()
     }
 
@@ -20,7 +22,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
         statusItem = item
 
-        let host = NSHostingController(rootView: SettingsView(settings: settings, onQuit: { NSApp.terminate(nil) }))
+        let host = NSHostingController(rootView: SettingsView(settings: settings, status: status, onQuit: { NSApp.terminate(nil) }))
         host.sizingOptions = .preferredContentSize
         popover.contentViewController = host
         popover.behavior = .transient

@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SettingsView: View {
     @Bindable var settings: AppSettings
+    let status: OverlayStatus
     let onQuit: () -> Void
 
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
@@ -11,6 +12,15 @@ struct SettingsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             CornerToggle(isOn: $settings.isEnabled, radius: settings.radius)
+            if settings.isEnabled && !status.hasBuiltinScreen {
+                Label(
+                    "Layar MacBook tidak terdeteksi, misalnya karena lid ditutup. Sudut muncul lagi begitu layarnya aktif.",
+                    systemImage: "info.circle"
+                )
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            }
             radiusSection
             Divider()
             optionsSection

@@ -3,13 +3,15 @@ import AppKit
 @MainActor
 final class AppDelegate: NSObject, NSApplicationDelegate {
     private let settings: AppSettings
+    private let status: OverlayStatus
     private let overlay: OverlayController
     private let statusItem: StatusItemController
 
     override init() {
         settings = AppSettings()
-        overlay = OverlayController(settings: settings)
-        statusItem = StatusItemController(settings: settings)
+        status = OverlayStatus()
+        overlay = OverlayController(settings: settings, status: status)
+        statusItem = StatusItemController(settings: settings, status: status)
         super.init()
     }
 

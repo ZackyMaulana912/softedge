@@ -3,11 +3,13 @@ import AppKit
 @MainActor
 final class OverlayController {
     private let settings: AppSettings
+    private let status: OverlayStatus
     private var windows: [CornerPosition: CornerWindow] = [:]
     private let space: OverlaySpace? = OverlaySpace.isEnabled ? OverlaySpace() : nil
 
-    init(settings: AppSettings) {
+    init(settings: AppSettings, status: OverlayStatus) {
         self.settings = settings
+        self.status = status
     }
 
     func start() {
@@ -45,7 +47,10 @@ final class OverlayController {
     }
 
     private func update(enabled: Bool, radius: Double) {
-        guard enabled, let screen = BuiltinScreen.find() else {
+        let builtin = BuiltinScreen.find()
+        status.hasBuiltinScreen = builtin != nil
+
+        guard enabled, let screen = builtin else {
             if enabled {
                 NSLog("RoundedCorners: built-in display not found, overlay not shown")
             }
