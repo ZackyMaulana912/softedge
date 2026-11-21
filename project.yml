@@ -24,7 +24,7 @@ targets:
         CFBundleVersion: "1"
         LSUIElement: true
         LSMinimumSystemVersion: "15.0"
-        NSHumanReadableCopyright: ""
+        NSHumanReadableCopyright: "Copyright © 2026 Zacky Maulana"
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zackymaulana.roundedcorners
