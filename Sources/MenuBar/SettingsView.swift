@@ -31,6 +31,17 @@ struct SettingsView: View {
             HStack {
                 Text("Radius sudut")
                 Spacer()
+                if settings.radius != AppSettings.defaultRadius {
+                    Button {
+                        settings.radius = AppSettings.defaultRadius
+                    } label: {
+                        Image(systemName: "arrow.counterclockwise")
+                    }
+                    .buttonStyle(.borderless)
+                    .foregroundStyle(.secondary)
+                    .help("Kembalikan ke \(Int(AppSettings.defaultRadius)) pt")
+                    .accessibilityLabel("Kembalikan radius ke \(Int(AppSettings.defaultRadius)) pt")
+                }
                 Text("\(Int(settings.radius)) pt")
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
