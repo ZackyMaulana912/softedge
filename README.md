@@ -9,8 +9,11 @@ Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar
 - Lapisan hitam hanya di dua sudut bawah layar bawaan MacBook, tidak pernah di monitor eksternal
 - Bentuk lengkungan kontinu ala Apple (squircle), bukan busur lingkaran biasa
 - Sudut tetap terlihat saat berpindah desktop dengan swipe dan saat memakai app layar penuh
-- Popover di menu bar: tombol nyala/mati, slider radius sudut (8 sampai 40 pt) dengan pratinjau langsung, buka otomatis saat login, dan sembunyikan ikon menu bar
+- Popover di menu bar: tombol nyala/mati, slider radius sudut (8 sampai 40 pt) dengan pratinjau langsung dan tombol untuk kembali ke ukuran bawaan, buka otomatis saat login, sembunyikan ikon menu bar, versi app, dan tombol cek pembaruan
+- Klik kanan ikon menu bar untuk langsung menyalakan atau mematikan sudut tanpa membuka popover
 - Popover menutup sendiri kalau kursor menjauh selama 2 detik
+- Popover memberi tahu kalau layar MacBook tidak terdeteksi, misalnya saat lid ditutup dan memakai monitor eksternal
+- Sudut dipasang ulang otomatis setelah Mac bangun dari sleep
 - Sangat ringan: sekitar 2 MB (sebagian besar untuk ikon app), CPU 0% saat diam, memori sekitar 15 MB saat mulai dan sekitar 35 MB setelah pengaturan dibuka
 
 ## Kebutuhan
@@ -30,7 +33,7 @@ Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar
      xattr -dr com.apple.quarantine /Applications/RoundedCorners.app
      ```
 
-App ini tidak muncul di Dock. Klik ikonnya di menu bar untuk mengubah pengaturan atau menutup app.
+App ini tidak muncul di Dock. Klik ikonnya di menu bar untuk mengubah pengaturan atau menutup app, atau klik kanan untuk langsung menyalakan atau mematikan sudut.
 
 Kalau ikon menu bar disembunyikan, buka lagi RoundedCorners dari Spotlight atau Launchpad untuk memunculkan pengaturannya.
 
@@ -52,7 +55,11 @@ Untuk membuat DMG rilis:
 ./scripts/make-dmg.sh
 ```
 
-DMG akan dibuat di `build/RoundedCorners-<versi>.dmg`. Nomor versinya diambil dari `CFBundleShortVersionString` di `project.yml`.
+DMG akan dibuat di `build/RoundedCorners-<versi>.dmg`, bersama file `.sha256` berisi checksum-nya. Nomor versinya diambil dari `CFBundleShortVersionString` di `project.yml`.
+
+Untuk memeriksa DMG yang sudah diunduh, taruh file `.sha256` di folder yang sama lalu jalankan `shasum -c RoundedCorners-<versi>.dmg.sha256`.
+
+Daftar perubahan per versi ada di [CHANGELOG.md](CHANGELOG.md).
 
 ## Cara kerja
 
