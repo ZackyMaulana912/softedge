@@ -6,11 +6,13 @@ struct CornerToggle: View {
     @Binding var isOn: Bool
     let radius: Double
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     private let tileShape = RoundedRectangle(cornerRadius: 14, style: .continuous)
 
     var body: some View {
         Button {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+            withAnimation(reduceMotion ? nil : .spring(response: 0.35, dampingFraction: 0.75)) {
                 isOn.toggle()
             }
         } label: {
