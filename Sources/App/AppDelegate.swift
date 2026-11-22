@@ -41,6 +41,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         switch shortcut {
         case .toggle:
             settings.isEnabled.toggle()
+        case .settings:
+            statusItem.toggleSettings()
         }
     }
 

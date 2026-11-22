@@ -46,6 +46,18 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         }
     }
 
+    /// For the keyboard shortcut: close the settings when open, otherwise open them.
+    func toggleSettings() {
+        if popover.isShown {
+            popover.performClose(nil)
+        } else {
+            // Unlike a reopen from Spotlight, a shortcut does not activate the app,
+            // and a hidden status item only gets placed for the active app.
+            NSApp.activate()
+            showSettings()
+        }
+    }
+
     /// A status item that was just made visible has no position yet, then slides
     /// down into the menu bar. Anchoring the popover before it settles puts the
     /// popover in the wrong place or fails to show it at all.
