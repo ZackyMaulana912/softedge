@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 struct SettingsView: View {
@@ -55,7 +56,7 @@ struct SettingsView: View {
             Slider(
                 value: Binding(
                     get: { settings.radius },
-                    set: { settings.radius = $0.rounded() }
+                    set: { setRadiusFromSlider($0) }
                 ),
                 in: AppSettings.radiusRange
             ) {
@@ -71,6 +72,19 @@ struct SettingsView: View {
         }
         .disabled(!settings.isEnabled)
         .opacity(settings.isEnabled ? 1 : 0.45)
+    }
+
+    /// The slider sticks a little at the default size and taps the trackpad
+    /// when it lands there, so the default is easy to find again by feel.
+    private func setRadiusFromSlider(_ value: Double) {
+        let snapDistance = 0.8
+        let target = abs(value - AppSettings.defaultRadius) < snapDistance
+            ? AppSettings.defaultRadius
+            : value.rounded()
+        if target == AppSettings.defaultRadius && settings.radius != AppSettings.defaultRadius {
+            NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
+        }
+        settings.radius = target
     }
 
     private var optionsSection: some View {
