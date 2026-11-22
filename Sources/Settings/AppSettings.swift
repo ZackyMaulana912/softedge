@@ -11,6 +11,7 @@ final class AppSettings {
         static let isEnabled = "isEnabled"
         static let radius = "radius"
         static let hidesMenuBarIcon = "hidesMenuBarIcon"
+        static let shortcutsEnabled = "shortcutsEnabled"
     }
 
     var isEnabled: Bool {
@@ -25,17 +26,23 @@ final class AppSettings {
         didSet { UserDefaults.standard.set(hidesMenuBarIcon, forKey: Key.hidesMenuBarIcon) }
     }
 
+    var shortcutsEnabled: Bool {
+        didSet { UserDefaults.standard.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
+    }
+
     init() {
         let defaults = UserDefaults.standard
         defaults.register(defaults: [
             Key.isEnabled: true,
             Key.radius: Self.defaultRadius,
             Key.hidesMenuBarIcon: false,
+            Key.shortcutsEnabled: true,
         ])
 
         isEnabled = defaults.bool(forKey: Key.isEnabled)
         radius = defaults.double(forKey: Key.radius).clamped(to: Self.radiusRange)
         hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
+        shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
     }
 }
 
