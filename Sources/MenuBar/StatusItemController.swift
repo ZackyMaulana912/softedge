@@ -5,13 +5,15 @@ import SwiftUI
 final class StatusItemController: NSObject, NSPopoverDelegate {
     private let settings: AppSettings
     private let status: OverlayStatus
+    private let hud: HUDWindow
     private var statusItem: NSStatusItem?
     private let popover = NSPopover()
     private let autoClose = PopoverAutoClose()
 
-    init(settings: AppSettings, status: OverlayStatus) {
+    init(settings: AppSettings, status: OverlayStatus, hud: HUDWindow) {
         self.settings = settings
         self.status = status
+        self.hud = hud
         super.init()
     }
 
@@ -88,6 +90,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         if let event = NSApp.currentEvent,
            event.type == .rightMouseUp || event.modifierFlags.contains(.control) {
             settings.isEnabled.toggle()
+            hud.showCorners(enabled: settings.isEnabled)
             return
         }
         if popover.isShown {

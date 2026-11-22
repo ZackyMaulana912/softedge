@@ -7,13 +7,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let overlay: OverlayController
     private let statusItem: StatusItemController
     private let hotKeys = GlobalHotKeys()
-    private let hud = HUDWindow()
+    private let hud: HUDWindow
 
     override init() {
         settings = AppSettings()
         status = OverlayStatus()
+        hud = HUDWindow()
         overlay = OverlayController(settings: settings, status: status)
-        statusItem = StatusItemController(settings: settings, status: status)
+        statusItem = StatusItemController(settings: settings, status: status, hud: hud)
         super.init()
     }
 
