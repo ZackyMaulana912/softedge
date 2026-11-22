@@ -7,6 +7,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let overlay: OverlayController
     private let statusItem: StatusItemController
     private let hotKeys = GlobalHotKeys()
+    private let hud = HUDWindow()
 
     override init() {
         settings = AppSettings()
@@ -41,6 +42,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         switch shortcut {
         case .toggle:
             settings.isEnabled.toggle()
+            hud.showCorners(enabled: settings.isEnabled)
         case .settings:
             statusItem.toggleSettings()
         }

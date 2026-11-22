@@ -30,6 +30,13 @@ final class HUDWindow {
         panel.contentView = host
     }
 
+    func showCorners(enabled: Bool) {
+        show(
+            symbol: enabled ? "rectangle.roundedbottom" : "rectangle",
+            text: enabled ? "Sudut nyala" : "Sudut mati"
+        )
+    }
+
     func show(symbol: String, text: String) {
         host.rootView = HUDView(symbol: symbol, text: text)
         let size = host.fittingSize
