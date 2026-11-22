@@ -90,6 +90,22 @@ struct SettingsView: View {
                 .controlSize(.small)
             }
 
+            SwitchRow("Shortcut keyboard", isOn: $settings.shortcutsEnabled)
+
+            if settings.shortcutsEnabled {
+                VStack(alignment: .leading, spacing: 2) {
+                    ForEach(AppShortcut.allCases, id: \.self) { shortcut in
+                        HStack(spacing: 6) {
+                            Text(shortcut.keys)
+                                .monospaced()
+                            Text(shortcut.title)
+                        }
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            }
+
             SwitchRow("Sembunyikan ikon menu bar", isOn: $settings.hidesMenuBarIcon)
 
             if settings.hidesMenuBarIcon {
