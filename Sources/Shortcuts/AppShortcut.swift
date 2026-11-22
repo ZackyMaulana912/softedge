@@ -5,6 +5,8 @@ import Carbon.HIToolbox
 enum AppShortcut: UInt32, CaseIterable {
     case toggle = 1
     case settings = 2
+    case radiusUp = 3
+    case radiusDown = 4
 
     static let modifiers = UInt32(controlKey | optionKey | cmdKey)
 
@@ -12,6 +14,8 @@ enum AppShortcut: UInt32, CaseIterable {
         switch self {
         case .toggle: return UInt32(kVK_ANSI_R)
         case .settings: return UInt32(kVK_ANSI_P)
+        case .radiusUp: return UInt32(kVK_ANSI_Equal)
+        case .radiusDown: return UInt32(kVK_ANSI_Minus)
         }
     }
 
@@ -19,6 +23,8 @@ enum AppShortcut: UInt32, CaseIterable {
         switch self {
         case .toggle: return "⌃⌥⌘R"
         case .settings: return "⌃⌥⌘P"
+        case .radiusUp: return "⌃⌥⌘+"
+        case .radiusDown: return "⌃⌥⌘−"
         }
     }
 
@@ -26,6 +32,8 @@ enum AppShortcut: UInt32, CaseIterable {
         switch self {
         case .toggle: return "nyalakan atau matikan sudut"
         case .settings: return "buka atau tutup pengaturan"
+        case .radiusUp: return "perbesar radius"
+        case .radiusDown: return "perkecil radius"
         }
     }
 }

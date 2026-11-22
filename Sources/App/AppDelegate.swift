@@ -46,7 +46,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             hud.showCorners(enabled: settings.isEnabled)
         case .settings:
             statusItem.toggleSettings()
+        case .radiusUp:
+            changeRadius(by: 1)
+        case .radiusDown:
+            changeRadius(by: -1)
         }
+    }
+
+    private func changeRadius(by step: Double) {
+        guard settings.isEnabled else { return }
+        let range = AppSettings.radiusRange
+        settings.radius = min(max(settings.radius + step, range.lowerBound), range.upperBound)
     }
 
     /// Opening the app again (Spotlight, Launchpad, Finder) brings up the settings,
