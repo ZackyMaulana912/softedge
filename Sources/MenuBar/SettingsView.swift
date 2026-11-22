@@ -109,7 +109,9 @@ struct SettingsView: View {
             SwitchRow("Sembunyikan ikon menu bar", isOn: $settings.hidesMenuBarIcon)
 
             if settings.hidesMenuBarIcon {
-                Text("Ikon hilang setelah panel ini ditutup. Buka lagi RoundedCorners dari Spotlight atau Launchpad untuk kembali ke sini.")
+                Text(settings.shortcutsEnabled
+                    ? "Ikon hilang setelah panel ini ditutup. Tekan \(AppShortcut.settings.keys), atau buka lagi RoundedCorners dari Spotlight, untuk kembali ke sini."
+                    : "Ikon hilang setelah panel ini ditutup. Buka lagi RoundedCorners dari Spotlight atau Launchpad untuk kembali ke sini.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
