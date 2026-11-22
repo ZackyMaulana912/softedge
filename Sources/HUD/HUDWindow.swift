@@ -37,6 +37,10 @@ final class HUDWindow {
         )
     }
 
+    func showRadius(_ radius: Double) {
+        show(symbol: "rectangle.roundedbottom", text: "Radius \(Int(radius)) pt")
+    }
+
     func show(symbol: String, text: String) {
         host.rootView = HUDView(symbol: symbol, text: text)
         let size = host.fittingSize

@@ -57,6 +57,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard settings.isEnabled else { return }
         let range = AppSettings.radiusRange
         settings.radius = min(max(settings.radius + step, range.lowerBound), range.upperBound)
+        hud.showRadius(settings.radius)
     }
 
     /// Opening the app again (Spotlight, Launchpad, Finder) brings up the settings,
