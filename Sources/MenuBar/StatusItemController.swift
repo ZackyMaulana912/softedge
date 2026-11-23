@@ -30,6 +30,18 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         popover.behavior = .transient
         popover.delegate = self
 
+        // The option can change while the popover is open, from its own switch.
+        observeChanges { [weak self] in
+            guard let self else { return }
+            let enabled = self.settings.autoClosesPopover
+            guard self.popover.isShown else { return }
+            if enabled {
+                self.startAutoClose()
+            } else {
+                self.autoClose.stop()
+            }
+        }
+
         observeChanges { [weak self] in
             guard let self else { return }
             self.updateIcon()
@@ -104,6 +116,11 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         guard let button = statusItem?.button else { return }
         NSApp.activate()
         popover.show(relativeTo: button.bounds, of: button, preferredEdge: .minY)
+        startAutoClose()
+    }
+
+    private func startAutoClose() {
+        guard settings.autoClosesPopover, let button = statusItem?.button else { return }
         autoClose.start(popover: popover, anchor: button)
     }
 

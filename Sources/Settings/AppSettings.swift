@@ -19,6 +19,7 @@ final class AppSettings {
         static let shortcutsEnabled = "shortcutsEnabled"
         static let pausedUntil = "pausedUntil"
         static let corners = "corners"
+        static let autoClosesPopover = "autoClosesPopover"
     }
 
     var isEnabled: Bool {
@@ -48,6 +49,11 @@ final class AppSettings {
         didSet { UserDefaults.standard.set(corners.rawValue, forKey: Key.corners) }
     }
 
+    /// Close the settings popover once the pointer stays away for a moment.
+    var autoClosesPopover: Bool {
+        didSet { UserDefaults.standard.set(autoClosesPopover, forKey: Key.autoClosesPopover) }
+    }
+
     var shortcutsEnabled: Bool {
         didSet { UserDefaults.standard.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
     }
@@ -60,12 +66,14 @@ final class AppSettings {
             Key.hidesMenuBarIcon: false,
             Key.shortcutsEnabled: true,
             Key.corners: CornerSelection.both.rawValue,
+            Key.autoClosesPopover: true,
         ])
 
         isEnabled = defaults.bool(forKey: Key.isEnabled)
         radius = defaults.double(forKey: Key.radius).clamped(to: Self.radiusRange)
         hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
         shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
+        autoClosesPopover = defaults.bool(forKey: Key.autoClosesPopover)
         corners = defaults.string(forKey: Key.corners).flatMap(CornerSelection.init(rawValue:)) ?? .both
         if let date = defaults.object(forKey: Key.pausedUntil) as? Date, date > .now {
             pausedUntil = date
