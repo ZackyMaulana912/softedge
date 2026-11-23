@@ -18,6 +18,7 @@ final class AppSettings {
         static let hidesMenuBarIcon = "hidesMenuBarIcon"
         static let shortcutsEnabled = "shortcutsEnabled"
         static let pausedUntil = "pausedUntil"
+        static let corners = "corners"
     }
 
     var isEnabled: Bool {
@@ -43,6 +44,10 @@ final class AppSettings {
         isEnabled && pausedUntil == nil
     }
 
+    var corners: CornerSelection {
+        didSet { UserDefaults.standard.set(corners.rawValue, forKey: Key.corners) }
+    }
+
     var shortcutsEnabled: Bool {
         didSet { UserDefaults.standard.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
     }
@@ -54,12 +59,14 @@ final class AppSettings {
             Key.radius: Self.defaultRadius,
             Key.hidesMenuBarIcon: false,
             Key.shortcutsEnabled: true,
+            Key.corners: CornerSelection.both.rawValue,
         ])
 
         isEnabled = defaults.bool(forKey: Key.isEnabled)
         radius = defaults.double(forKey: Key.radius).clamped(to: Self.radiusRange)
         hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
         shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
+        corners = defaults.string(forKey: Key.corners).flatMap(CornerSelection.init(rawValue:)) ?? .both
         if let date = defaults.object(forKey: Key.pausedUntil) as? Date, date > .now {
             pausedUntil = date
         } else {
