@@ -1,7 +1,7 @@
 import AppKit
 import SwiftUI
 
-/// Radius slider with its label and current value.
+/// Radius slider with its label, current value and one-click sizes.
 struct RadiusSection: View {
     @Bindable var settings: AppSettings
 
@@ -10,17 +10,6 @@ struct RadiusSection: View {
             HStack {
                 Text("Radius sudut")
                 Spacer()
-                if settings.radius != AppSettings.defaultRadius {
-                    Button {
-                        settings.radius = AppSettings.defaultRadius
-                    } label: {
-                        Image(systemName: "arrow.counterclockwise")
-                    }
-                    .buttonStyle(.borderless)
-                    .foregroundStyle(.secondary)
-                    .help("Kembalikan ke \(Int(AppSettings.defaultRadius)) pt")
-                    .accessibilityLabel("Kembalikan radius ke \(Int(AppSettings.defaultRadius)) pt")
-                }
                 Text("\(Int(settings.radius)) pt")
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
@@ -41,6 +30,16 @@ struct RadiusSection: View {
             .labelsHidden()
             .font(.caption)
             .foregroundStyle(.secondary)
+
+            HStack(spacing: 6) {
+                ForEach(AppSettings.presets) { preset in
+                    Button(preset.name) {
+                        settings.radius = preset.radius
+                    }
+                    .help("\(Int(preset.radius)) pt")
+                }
+            }
+            .controlSize(.small)
         }
         .disabled(!settings.isEnabled)
         .opacity(settings.isEnabled ? 1 : 0.45)

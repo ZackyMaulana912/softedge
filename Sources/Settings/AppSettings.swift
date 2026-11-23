@@ -6,6 +6,11 @@ import Observation
 final class AppSettings {
     static let radiusRange: ClosedRange<Double> = 8...40
     static let defaultRadius: Double = 28
+    static let presets = [
+        RadiusPreset(name: "Kecil", radius: 18),
+        RadiusPreset(name: "Sedang", radius: defaultRadius),
+        RadiusPreset(name: "Besar", radius: 38),
+    ]
 
     private enum Key {
         static let isEnabled = "isEnabled"
