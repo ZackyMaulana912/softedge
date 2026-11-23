@@ -11,7 +11,12 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            CornerToggle(isOn: cornersBinding, radius: settings.radius, subtitle: settings.pausedUntil == nil ? nil : "Dijeda")
+            CornerToggle(
+                isOn: cornersBinding,
+                radius: settings.radius,
+                corners: settings.corners,
+                subtitle: settings.pausedUntil == nil ? nil : "Dijeda"
+            )
             if settings.isEnabled {
                 PauseRow(settings: settings)
             }

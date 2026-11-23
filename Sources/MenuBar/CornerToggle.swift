@@ -5,6 +5,7 @@ import SwiftUI
 struct CornerToggle: View {
     @Binding var isOn: Bool
     let radius: Double
+    var corners: CornerSelection = .both
     /// Replaces "Nyala" / "Mati", for example while paused.
     var subtitle: String?
 
@@ -19,7 +20,7 @@ struct CornerToggle: View {
             }
         } label: {
             HStack(spacing: 12) {
-                ScreenGlyph(isOn: isOn, radius: radius)
+                ScreenGlyph(isOn: isOn, radius: radius, corners: corners)
                     .frame(width: 60, height: 42)
 
                 VStack(alignment: .leading, spacing: 2) {
@@ -50,10 +51,13 @@ struct CornerToggle: View {
 private struct ScreenGlyph: View {
     let isOn: Bool
     let radius: Double
+    let corners: CornerSelection
+
+    private static let squareRadius: CGFloat = 1.5
 
     /// Maps the real radius range onto what fits in the small glyph.
     private var glyphRadius: CGFloat {
-        guard isOn else { return 1.5 }
+        guard isOn else { return Self.squareRadius }
         let range = AppSettings.radiusRange
         let t = (radius - range.lowerBound) / (range.upperBound - range.lowerBound)
         return 3 + t * 9
@@ -62,8 +66,8 @@ private struct ScreenGlyph: View {
     var body: some View {
         let screen = UnevenRoundedRectangle(
             topLeadingRadius: 3,
-            bottomLeadingRadius: glyphRadius,
-            bottomTrailingRadius: glyphRadius,
+            bottomLeadingRadius: corners.positions.contains(.bottomLeft) ? glyphRadius : Self.squareRadius,
+            bottomTrailingRadius: corners.positions.contains(.bottomRight) ? glyphRadius : Self.squareRadius,
             topTrailingRadius: 3,
             style: .continuous
         )
