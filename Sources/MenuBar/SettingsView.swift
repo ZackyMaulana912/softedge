@@ -11,7 +11,10 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            CornerToggle(isOn: $settings.isEnabled, radius: settings.radius)
+            CornerToggle(isOn: cornersBinding, radius: settings.radius, subtitle: settings.pausedUntil == nil ? nil : "Dijeda")
+            if settings.isEnabled {
+                PauseRow(settings: settings)
+            }
             if settings.isEnabled && !status.hasBuiltinScreen {
                 Label(
                     "Layar MacBook tidak terdeteksi, misalnya karena lid ditutup. Sudut muncul lagi begitu layarnya aktif.",
@@ -76,6 +79,14 @@ struct SettingsView: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
+    }
+
+    /// The tile shows whether corners are on screen; tapping it while paused resumes.
+    private var cornersBinding: Binding<Bool> {
+        Binding(
+            get: { settings.showsCorners },
+            set: { _ in settings.toggleCorners() }
+        )
     }
 
     private var launchBinding: Binding<Bool> {

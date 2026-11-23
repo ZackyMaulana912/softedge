@@ -37,7 +37,7 @@ struct RadiusSection: View {
                     Button(preset.name) {
                         settings.radius = preset.radius
                     }
-                    .buttonStyle(PresetButtonStyle(isCurrent: isCurrent))
+                    .buttonStyle(ChipButtonStyle(isSelected: isCurrent))
                     .help("\(Int(preset.radius)) pt")
                     .accessibilityAddTraits(isCurrent ? .isSelected : [])
                 }
@@ -58,22 +58,5 @@ struct RadiusSection: View {
             NSHapticFeedbackManager.defaultPerformer.perform(.alignment, performanceTime: .now)
         }
         settings.radius = target
-    }
-}
-
-/// Capsule chip, filled with the accent color when it matches the current radius.
-private struct PresetButtonStyle: ButtonStyle {
-    let isCurrent: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.system(size: 11, weight: isCurrent ? .semibold : .regular))
-            .padding(.horizontal, 12)
-            .padding(.vertical, 4)
-            .foregroundStyle(isCurrent ? Color.white : Color.primary)
-            .background(Capsule().fill(
-                isCurrent ? Color.accentColor : Color.primary.opacity(configuration.isPressed ? 0.16 : 0.08)
-            ))
-            .contentShape(Capsule())
     }
 }

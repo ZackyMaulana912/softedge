@@ -5,6 +5,8 @@ import SwiftUI
 struct CornerToggle: View {
     @Binding var isOn: Bool
     let radius: Double
+    /// Replaces "Nyala" / "Mati", for example while paused.
+    var subtitle: String?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -24,7 +26,7 @@ struct CornerToggle: View {
                     Text("Sudut Melengkung")
                         .font(.system(size: 13, weight: .semibold))
                         .lineLimit(1)
-                    Text(isOn ? "Nyala" : "Mati")
+                    Text(subtitle ?? (isOn ? "Nyala" : "Mati"))
                         .font(.system(size: 11))
                         .foregroundStyle(.secondary)
                 }
