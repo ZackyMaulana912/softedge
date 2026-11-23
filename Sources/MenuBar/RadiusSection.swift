@@ -1,12 +1,28 @@
 import AppKit
 import SwiftUI
 
-/// Radius slider with its label, current value and one-click sizes.
+/// Which corners to cover, plus the radius slider with its value and one-click sizes.
 struct RadiusSection: View {
     @Bindable var settings: AppSettings
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
+            HStack {
+                Text("Sudut")
+                    .lineLimit(1)
+                Spacer()
+                Picker("Sudut", selection: $settings.corners) {
+                    ForEach(CornerSelection.allCases) { selection in
+                        Text(selection.title).tag(selection)
+                    }
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .controlSize(.small)
+                .frame(width: 190)
+            }
+            .padding(.bottom, 6)
+
             HStack {
                 Text("Radius sudut")
                 Spacer()
