@@ -7,12 +7,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private let overlay: OverlayController
     private let statusItem: StatusItemController
     private let hotKeys = GlobalHotKeys()
+    private let pauseTimer: PauseTimer
     private let hud: HUDWindow
 
     override init() {
         settings = AppSettings()
         status = OverlayStatus()
         hud = HUDWindow()
+        pauseTimer = PauseTimer(settings: settings)
         overlay = OverlayController(settings: settings, status: status)
         statusItem = StatusItemController(settings: settings, status: status, hud: hud)
         super.init()
@@ -21,6 +23,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
         statusItem.install()
         overlay.start()
+        pauseTimer.start()
         observeChanges { [weak self] in
             guard let self else { return }
             if self.settings.shortcutsEnabled {
@@ -42,8 +45,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func handle(_ shortcut: AppShortcut) {
         switch shortcut {
         case .toggle:
-            settings.isEnabled.toggle()
-            hud.showCorners(enabled: settings.isEnabled)
+            settings.toggleCorners()
+            hud.showCorners(enabled: settings.showsCorners)
         case .settings:
             statusItem.toggleSettings()
         case .radiusUp:

@@ -17,6 +17,7 @@ final class AppSettings {
         static let radius = "radius"
         static let hidesMenuBarIcon = "hidesMenuBarIcon"
         static let shortcutsEnabled = "shortcutsEnabled"
+        static let pausedUntil = "pausedUntil"
     }
 
     var isEnabled: Bool {
@@ -29,6 +30,17 @@ final class AppSettings {
 
     var hidesMenuBarIcon: Bool {
         didSet { UserDefaults.standard.set(hidesMenuBarIcon, forKey: Key.hidesMenuBarIcon) }
+    }
+
+    /// While set, the corners stay hidden even though the effect is on.
+    /// Cleared by `PauseTimer` once the time has passed.
+    var pausedUntil: Date? {
+        didSet { UserDefaults.standard.set(pausedUntil, forKey: Key.pausedUntil) }
+    }
+
+    /// Whether the corners should be on screen right now.
+    var showsCorners: Bool {
+        isEnabled && pausedUntil == nil
     }
 
     var shortcutsEnabled: Bool {
@@ -48,6 +60,31 @@ final class AppSettings {
         radius = defaults.double(forKey: Key.radius).clamped(to: Self.radiusRange)
         hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
         shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
+        if let date = defaults.object(forKey: Key.pausedUntil) as? Date, date > .now {
+            pausedUntil = date
+        } else {
+            pausedUntil = nil
+        }
+    }
+
+    func pause(until date: Date) {
+        isEnabled = true
+        pausedUntil = date
+    }
+
+    func resume() {
+        pausedUntil = nil
+    }
+
+    /// One action for every on/off control: ends a pause if there is one,
+    /// otherwise flips the effect.
+    func toggleCorners() {
+        if pausedUntil != nil {
+            pausedUntil = nil
+            isEnabled = true
+        } else {
+            isEnabled.toggle()
+        }
     }
 }
 

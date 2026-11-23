@@ -89,8 +89,8 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
     @objc private func buttonClicked(_ sender: Any?) {
         if let event = NSApp.currentEvent,
            event.type == .rightMouseUp || event.modifierFlags.contains(.control) {
-            settings.isEnabled.toggle()
-            hud.showCorners(enabled: settings.isEnabled)
+            settings.toggleCorners()
+            hud.showCorners(enabled: settings.showsCorners)
             return
         }
         if popover.isShown {
