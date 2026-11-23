@@ -57,6 +57,8 @@ struct SettingsView: View {
                 .controlSize(.small)
             }
 
+            SwitchRow("Tutup panel saat kursor menjauh", isOn: $settings.autoClosesPopover)
+
             SwitchRow("Shortcut keyboard", isOn: $settings.shortcutsEnabled)
 
             if settings.shortcutsEnabled {
