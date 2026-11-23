@@ -32,7 +32,7 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
 
         observeChanges { [weak self] in
             guard let self else { return }
-            self.updateIcon(enabled: self.settings.isEnabled)
+            self.updateIcon()
             self.updateVisibility()
         }
     }
@@ -111,13 +111,25 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         statusItem?.isVisible = !settings.hidesMenuBarIcon || popover.isShown
     }
 
-    private func updateIcon(enabled: Bool) {
+    private func updateIcon() {
         guard let button = statusItem?.button else { return }
-        let name = enabled ? "rectangle.roundedbottom" : "rectangle"
-        let description = enabled ? "Sudut melengkung nyala" : "Sudut melengkung mati"
-        button.toolTip = enabled
-            ? "RoundedCorners: nyala\nKlik kanan untuk mematikan"
-            : "RoundedCorners: mati\nKlik kanan untuk menyalakan"
+        let name: String
+        let description: String
+
+        if let until = settings.pausedUntil {
+            let time = PauseSchedule.label(for: until)
+            name = "pause.rectangle"
+            description = "Sudut melengkung dijeda sampai \(time)"
+            button.toolTip = "RoundedCorners: dijeda sampai \(time)\nKlik kanan untuk melanjutkan"
+        } else if settings.isEnabled {
+            name = "rectangle.roundedbottom"
+            description = "Sudut melengkung nyala"
+            button.toolTip = "RoundedCorners: nyala\nKlik kanan untuk mematikan"
+        } else {
+            name = "rectangle"
+            description = "Sudut melengkung mati"
+            button.toolTip = "RoundedCorners: mati\nKlik kanan untuk menyalakan"
+        }
 
         if let image = NSImage(systemSymbolName: name, accessibilityDescription: description) {
             image.isTemplate = true
