@@ -11,6 +11,11 @@ struct SettingsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
+            if !settings.hasSeenWelcome {
+                WelcomeCard(shortcutsEnabled: settings.shortcutsEnabled) {
+                    settings.hasSeenWelcome = true
+                }
+            }
             CornerToggle(
                 isOn: cornersBinding,
                 radius: settings.radius,

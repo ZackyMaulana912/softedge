@@ -20,6 +20,7 @@ final class AppSettings {
         static let pausedUntil = "pausedUntil"
         static let corners = "corners"
         static let autoClosesPopover = "autoClosesPopover"
+        static let hasSeenWelcome = "hasSeenWelcome"
     }
 
     var isEnabled: Bool {
@@ -58,6 +59,11 @@ final class AppSettings {
         didSet { UserDefaults.standard.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
     }
 
+    /// False until the welcome card in the settings has been dismissed once.
+    var hasSeenWelcome: Bool {
+        didSet { UserDefaults.standard.set(hasSeenWelcome, forKey: Key.hasSeenWelcome) }
+    }
+
     init() {
         let defaults = UserDefaults.standard
         defaults.register(defaults: [
@@ -67,6 +73,7 @@ final class AppSettings {
             Key.shortcutsEnabled: true,
             Key.corners: CornerSelection.both.rawValue,
             Key.autoClosesPopover: true,
+            Key.hasSeenWelcome: false,
         ])
 
         isEnabled = defaults.bool(forKey: Key.isEnabled)
@@ -74,6 +81,7 @@ final class AppSettings {
         hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
         shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
         autoClosesPopover = defaults.bool(forKey: Key.autoClosesPopover)
+        hasSeenWelcome = defaults.bool(forKey: Key.hasSeenWelcome)
         corners = defaults.string(forKey: Key.corners).flatMap(CornerSelection.init(rawValue:)) ?? .both
         if let date = defaults.object(forKey: Key.pausedUntil) as? Date, date > .now {
             pausedUntil = date
