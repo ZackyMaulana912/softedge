@@ -7,6 +7,8 @@ struct AppFooter: View {
 
     @State private var updates = UpdateChecker()
 
+    private static let releasesURL = URL(string: "https://github.com/ZackyMaulana912/softedge/releases/latest")!
+
     private var version: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "?"
     }
@@ -43,13 +45,23 @@ struct AppFooter: View {
         case .upToDate:
             Label("Sudah versi terbaru", systemImage: "checkmark")
                 .foregroundStyle(.secondary)
-        case .available(let version, _):
-            Text("Versi \(version) tersedia")
+        case .available(let version, let page):
+            Button("Unduh versi \(version)") {
+                NSWorkspace.shared.open(page)
+            }
+            .buttonStyle(.link)
+            .help("Buka halaman rilis versi \(version) di GitHub")
         case .failed(let message):
-            HStack(spacing: 4) {
-                Text(message)
-                    .foregroundStyle(.secondary)
-                checkButton("Coba lagi")
+            VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 4) {
+                    Text(message)
+                        .foregroundStyle(.secondary)
+                    checkButton("Coba lagi")
+                }
+                Button("Buka halaman rilis") {
+                    NSWorkspace.shared.open(Self.releasesURL)
+                }
+                .buttonStyle(.link)
             }
         }
     }
