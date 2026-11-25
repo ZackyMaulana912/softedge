@@ -30,10 +30,11 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         popover.behavior = .transient
         popover.delegate = self
 
-        // The option can change while the popover is open, from its own switch.
+        // The option can change while the popover is open, from its own switch,
+        // and dismissing the welcome turns auto close on.
         observeChanges { [weak self] in
             guard let self else { return }
-            let enabled = self.settings.autoClosesPopover
+            let enabled = self.shouldAutoClose
             guard self.popover.isShown else { return }
             if enabled {
                 self.startAutoClose()
@@ -119,8 +120,13 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         startAutoClose()
     }
 
+    /// The welcome stays until it is dismissed on purpose.
+    private var shouldAutoClose: Bool {
+        settings.autoClosesPopover && settings.hasSeenWelcome
+    }
+
     private func startAutoClose() {
-        guard settings.autoClosesPopover, let button = statusItem?.button else { return }
+        guard shouldAutoClose, let button = statusItem?.button else { return }
         autoClose.start(popover: popover, anchor: button)
     }
 

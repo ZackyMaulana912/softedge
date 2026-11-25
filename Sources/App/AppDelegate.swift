@@ -35,9 +35,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             }
         }
 
+        // The very first launch shows the welcome, so a new user sees where the app lives.
         // With the icon hidden, a manual launch would otherwise show nothing at all.
         // A launch at login stays silent, so only do this when that option is off.
-        if settings.hidesMenuBarIcon && !LaunchAtLogin.isEnabled {
+        if !settings.hasSeenWelcome || (settings.hidesMenuBarIcon && !LaunchAtLogin.isEnabled) {
             statusItem.showSettings()
         }
     }
