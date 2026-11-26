@@ -40,3 +40,22 @@ grep -qx "## $VERSION" CHANGELOG.md || fail "CHANGELOG.md belum punya bagian \"#
 gh auth status >/dev/null 2>&1 || fail "gh belum login. Jalankan: gh auth login"
 
 echo "Semua pemeriksaan lolos."
+
+# The release notes are the CHANGELOG section of this version, without its heading.
+NOTES="build/release-notes-$VERSION.md"
+mkdir -p build
+awk -v heading="## $VERSION" '
+    $0 == heading { found = 1; next }
+    found && /^## / { exit }
+    found { print }
+' CHANGELOG.md | sed -e '/./,$!d' > "$NOTES"
+[[ -s "$NOTES" ]] || fail "bagian $VERSION di CHANGELOG.md masih kosong."
+
+# Builds, tests and packs the DMG plus its checksum.
+scripts/make-dmg.sh
+DMG="build/RoundedCorners-$VERSION.dmg"
+[[ -f "$DMG" && -f "$DMG.sha256" ]] || fail "$DMG tidak terbuat."
+
+echo
+echo "Siap dirilis: $DMG"
+echo "Catatan rilis: $NOTES"
