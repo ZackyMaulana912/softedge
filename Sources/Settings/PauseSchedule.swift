@@ -17,8 +17,11 @@ enum PauseSchedule {
 
     /// "14.30" for later today, "besok 06.00" for another day.
     static func label(for date: Date, now: Date = .now) -> String {
+        // Two digit hours, as Indonesian writes times: "06.00", not "6.00".
         let time = date.formatted(
-            Date.FormatStyle(date: .omitted, time: .shortened, locale: Locale(identifier: "id_ID"))
+            Date.FormatStyle(locale: Locale(identifier: "id_ID"))
+                .hour(.twoDigits(amPM: .omitted))
+                .minute(.twoDigits)
         )
         return Calendar.current.isDate(date, inSameDayAs: now) ? time : "besok \(time)"
     }
