@@ -1,0 +1,41 @@
+# Builds the app and runs the tests on GitHub for every push to main and every pull request.
+name: Build dan tes
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ["**.md", "docs/**"]
+  pull_request:
+    paths-ignore: ["**.md", "docs/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Versi Xcode
+        run: xcodebuild -version
+
+      - name: Pasang XcodeGen
+        run: brew install xcodegen
+
+      - name: Build dan tes
+        run: scripts/test.sh
+
+      - name: Simpan log kalau gagal
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-log
+          path: build/test.log
+          retention-days: 7
