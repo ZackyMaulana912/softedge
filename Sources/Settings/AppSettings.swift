@@ -24,21 +24,21 @@ final class AppSettings {
     }
 
     var isEnabled: Bool {
-        didSet { UserDefaults.standard.set(isEnabled, forKey: Key.isEnabled) }
+        didSet { store.set(isEnabled, forKey: Key.isEnabled) }
     }
 
     var radius: Double {
-        didSet { UserDefaults.standard.set(radius, forKey: Key.radius) }
+        didSet { store.set(radius, forKey: Key.radius) }
     }
 
     var hidesMenuBarIcon: Bool {
-        didSet { UserDefaults.standard.set(hidesMenuBarIcon, forKey: Key.hidesMenuBarIcon) }
+        didSet { store.set(hidesMenuBarIcon, forKey: Key.hidesMenuBarIcon) }
     }
 
     /// While set, the corners stay hidden even though the effect is on.
     /// Cleared by `PauseTimer` once the time has passed.
     var pausedUntil: Date? {
-        didSet { UserDefaults.standard.set(pausedUntil, forKey: Key.pausedUntil) }
+        didSet { store.set(pausedUntil, forKey: Key.pausedUntil) }
     }
 
     /// Whether the corners should be on screen right now.
@@ -47,43 +47,35 @@ final class AppSettings {
     }
 
     var corners: CornerSelection {
-        didSet { UserDefaults.standard.set(corners.rawValue, forKey: Key.corners) }
+        didSet { store.set(corners.rawValue, forKey: Key.corners) }
     }
 
     /// Close the settings popover once the pointer stays away for a moment.
     var autoClosesPopover: Bool {
-        didSet { UserDefaults.standard.set(autoClosesPopover, forKey: Key.autoClosesPopover) }
+        didSet { store.set(autoClosesPopover, forKey: Key.autoClosesPopover) }
     }
 
     var shortcutsEnabled: Bool {
-        didSet { UserDefaults.standard.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
+        didSet { store.set(shortcutsEnabled, forKey: Key.shortcutsEnabled) }
     }
 
     /// False until the welcome card in the settings has been dismissed once.
     var hasSeenWelcome: Bool {
-        didSet { UserDefaults.standard.set(hasSeenWelcome, forKey: Key.hasSeenWelcome) }
+        didSet { store.set(hasSeenWelcome, forKey: Key.hasSeenWelcome) }
     }
 
-    init() {
-        let defaults = UserDefaults.standard
-        defaults.register(defaults: [
-            Key.isEnabled: true,
-            Key.radius: Self.defaultRadius,
-            Key.hidesMenuBarIcon: false,
-            Key.shortcutsEnabled: true,
-            Key.corners: CornerSelection.both.rawValue,
-            Key.autoClosesPopover: true,
-            Key.hasSeenWelcome: false,
-        ])
+    @ObservationIgnored private let store: SettingsStore
 
-        isEnabled = defaults.bool(forKey: Key.isEnabled)
-        radius = defaults.double(forKey: Key.radius).clamped(to: Self.radiusRange)
-        hidesMenuBarIcon = defaults.bool(forKey: Key.hidesMenuBarIcon)
-        shortcutsEnabled = defaults.bool(forKey: Key.shortcutsEnabled)
-        autoClosesPopover = defaults.bool(forKey: Key.autoClosesPopover)
-        hasSeenWelcome = defaults.bool(forKey: Key.hasSeenWelcome)
-        corners = defaults.string(forKey: Key.corners).flatMap(CornerSelection.init(rawValue:)) ?? .both
-        if let date = defaults.object(forKey: Key.pausedUntil) as? Date, date > .now {
+    init(store: SettingsStore = UserDefaults.standard) {
+        self.store = store
+        isEnabled = store.object(forKey: Key.isEnabled) as? Bool ?? true
+        radius = (store.object(forKey: Key.radius) as? Double ?? Self.defaultRadius).clamped(to: Self.radiusRange)
+        hidesMenuBarIcon = store.object(forKey: Key.hidesMenuBarIcon) as? Bool ?? false
+        shortcutsEnabled = store.object(forKey: Key.shortcutsEnabled) as? Bool ?? true
+        autoClosesPopover = store.object(forKey: Key.autoClosesPopover) as? Bool ?? true
+        hasSeenWelcome = store.object(forKey: Key.hasSeenWelcome) as? Bool ?? false
+        corners = (store.object(forKey: Key.corners) as? String).flatMap(CornerSelection.init(rawValue:)) ?? .both
+        if let date = store.object(forKey: Key.pausedUntil) as? Date, date > .now {
             pausedUntil = date
         } else {
             pausedUntil = nil
