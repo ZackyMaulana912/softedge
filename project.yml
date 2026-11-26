@@ -52,6 +52,9 @@ targets:
       - Sources/Overlay/CornerPath.swift
       - Sources/Overlay/CornerStyle.swift
       - Sources/Settings/CornerSelection.swift
+      - Sources/Settings/AppSettings.swift
+      - Sources/Settings/RadiusPreset.swift
+      - Sources/Settings/SettingsStore.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zackymaulana.roundedcorners.tests
