@@ -19,6 +19,9 @@ for tool in xcodegen xcodebuild; do
     fi
 done
 
+# Only package code that passes its tests.
+scripts/test.sh
+
 xcodegen generate
 xcodebuild -quiet -project "$APP_NAME.xcodeproj" -scheme "$APP_NAME" \
     -configuration Release -destination 'generic/platform=macOS' \
