@@ -49,6 +49,9 @@ targets:
       - Tests
       - Sources/Updates/AppVersion.swift
       - Sources/Settings/PauseSchedule.swift
+      - Sources/Overlay/CornerPath.swift
+      - Sources/Overlay/CornerStyle.swift
+      - Sources/Settings/CornerSelection.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zackymaulana.roundedcorners.tests
