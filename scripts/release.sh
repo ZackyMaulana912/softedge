@@ -1,6 +1,7 @@
 #!/bin/bash
 # Prepares a release of RoundedCorners.
-# Usage: scripts/release.sh 0.2.0
+# Usage: scripts/release.sh 0.2.0 [--draft]
+# With --draft the release stays hidden on GitHub until it is published there.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -13,6 +14,14 @@ VERSION="${1:-}"
 [[ -n "$VERSION" ]] || fail "sebutkan versinya, misalnya: scripts/release.sh 0.2.0"
 [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "versi harus berbentuk angka.angka.angka, misalnya 0.2.0"
 TAG="v$VERSION"
+
+DRAFT=()
+AS_DRAFT=""
+case "${2:-}" in
+    "") ;;
+    --draft) DRAFT=(--draft); AS_DRAFT="sebagai draft " ;;
+    *) fail "pilihan tidak dikenal: $2" ;;
+esac
 
 for tool in git xcodegen xcodebuild gh; do
     command -v "$tool" >/dev/null 2>&1 || fail "$tool tidak ditemukan."
@@ -56,6 +65,24 @@ scripts/make-dmg.sh
 DMG="build/RoundedCorners-$VERSION.dmg"
 [[ -f "$DMG" && -f "$DMG.sha256" ]] || fail "$DMG tidak terbuat."
 
+# --- Publishing: nothing below runs without a clear yes.
 echo
 echo "Siap dirilis: $DMG"
-echo "Catatan rilis: $NOTES"
+echo "Catatan rilis:"
+sed 's/^/    /' "$NOTES"
+echo
+read -r -p "Terbitkan $TAG ${AS_DRAFT}di GitHub sekarang? (y/N) " answer
+if [[ "$answer" != "y" && "$answer" != "Y" ]]; then
+    echo "Dibatalkan. DMG dan catatan rilis tetap ada di build/."
+    exit 0
+fi
+
+# GitHub creates the tag on the exact commit that was checked and built.
+gh release create "$TAG" "$DMG" "$DMG.sha256" \
+    --target "$(git rev-parse HEAD)" \
+    --title "RoundedCorners $VERSION" \
+    --notes-file "$NOTES" \
+    ${DRAFT[@]+"${DRAFT[@]}"}
+git fetch --quiet --tags origin
+
+echo "Rilis $TAG selesai."
