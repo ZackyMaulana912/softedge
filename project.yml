@@ -48,6 +48,7 @@ targets:
     sources:
       - Tests
       - Sources/Updates/AppVersion.swift
+      - Sources/Settings/PauseSchedule.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zackymaulana.roundedcorners.tests
