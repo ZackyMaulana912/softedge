@@ -1,0 +1,65 @@
+name: Laporan masalah
+description: Ada yang tidak berjalan semestinya
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Terima kasih sudah melapor. Cek dulu apakah kamu memakai versi terbaru: klik ikon di menu bar, lalu "Cek pembaruan" di bagian bawah.
+  - type: textarea
+    id: what
+    attributes:
+      label: Apa yang terjadi?
+      description: Ceritakan masalahnya sejelas mungkin.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Langkah untuk memunculkan masalahnya
+      placeholder: |
+        1. Buka popover
+        2. Geser radius ke 40
+        3. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Yang seharusnya terjadi
+  - type: input
+    id: app-version
+    attributes:
+      label: Versi RoundedCorners
+      description: Tertulis di bagian bawah popover, misalnya 0.2.0.
+    validations:
+      required: true
+  - type: input
+    id: macos-version
+    attributes:
+      label: Versi macOS
+      description: Menu Apple > About This Mac, misalnya macOS 26.1.
+    validations:
+      required: true
+  - type: input
+    id: mac-model
+    attributes:
+      label: Model Mac
+      placeholder: MacBook Pro 14 inci (M5)
+    validations:
+      required: true
+  - type: dropdown
+    id: external-display
+    attributes:
+      label: Ada monitor eksternal yang tersambung?
+      options:
+        - Tidak
+        - Ya, lid MacBook terbuka
+        - Ya, lid MacBook tertutup
+    validations:
+      required: true
+  - type: textarea
+    id: media
+    attributes:
+      label: Foto atau video
+      description: Sudut hitam sengaja tidak ikut di screenshot macOS, jadi foto layar dengan kamera ponsel kalau masalahnya soal tampilan sudut.
