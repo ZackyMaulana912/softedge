@@ -1,0 +1,22 @@
+name: Usulan fitur
+description: Ide untuk membuat RoundedCorners lebih berguna
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Masalah apa yang ingin diselesaikan?
+      description: Ceritakan situasinya, misalnya "Saat presentasi saya ingin ...".
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Usulan kamu
+      description: Bagaimana sebaiknya fitur ini bekerja?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Cara lain yang sudah dicoba
