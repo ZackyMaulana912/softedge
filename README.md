@@ -1,5 +1,7 @@
 # RoundedCorners
 
+[![Build dan tes](https://github.com/ZackyMaulana912/softedge/actions/workflows/test.yml/badge.svg)](https://github.com/ZackyMaulana912/softedge/actions/workflows/test.yml)
+
 App kecil di menu bar macOS yang membuat sudut bawah layar MacBook terlihat melengkung, mirip sudut layar laptop OLED terbaru.
 
 Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar mini-LED atau OLED, piksel hitam menyatu dengan bingkai layar, jadi sudutnya terlihat melengkung. Ini hanya efek visual, panel fisiknya tetap persegi.
@@ -65,7 +67,15 @@ xcodebuild -project RoundedCorners.xcodeproj -scheme RoundedCorners -configurati
 open build/Build/Products/Debug/RoundedCorners.app
 ```
 
-Untuk membuat DMG rilis:
+Untuk menjalankan tes otomatis (tidak membuka app dan tidak menyentuh pengaturanmu):
+
+```bash
+./scripts/test.sh
+```
+
+GitHub juga menjalankan tes yang sama untuk setiap push ke main dan setiap pull request.
+
+Untuk membuat DMG rilis (tesnya dijalankan dulu, DMG tidak dibuat kalau ada yang gagal):
 
 ```bash
 ./scripts/make-dmg.sh
@@ -74,6 +84,8 @@ Untuk membuat DMG rilis:
 DMG akan dibuat di `build/RoundedCorners-<versi>.dmg`, bersama file `.sha256` berisi checksum-nya. Nomor versinya diambil dari `CFBundleShortVersionString` di `project.yml`.
 
 Untuk memeriksa DMG yang sudah diunduh, taruh file `.sha256` di folder yang sama lalu jalankan `shasum -c RoundedCorners-<versi>.dmg.sha256`.
+
+Untuk merilis versi baru ke GitHub, jalankan `./scripts/release.sh <versi>`. Langkah lengkapnya ada di [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Daftar perubahan per versi ada di [CHANGELOG.md](CHANGELOG.md).
 
@@ -84,6 +96,8 @@ Daftar perubahan per versi ada di [CHANGELOG.md](CHANGELOG.md).
 - Window sudut meminta macOS agar tidak ikut terekam di screenshot dan rekaman layar.
 - Lapisan hanya muncul di layar bawaan MacBook (dideteksi dengan `CGDisplayIsBuiltin`) dan ikut menyesuaikan saat resolusi atau scaling diubah.
 - Pengaturan disimpan di `UserDefaults`. Buka otomatis saat login memakai `SMAppService`, dan statusnya dibaca langsung dari sistem.
+- Shortcut keyboard memakai `RegisterEventHotKey` dari Carbon, jadi tidak butuh izin Accessibility.
+- Cek pembaruan meminta rilis terbaru dari GitHub API (`releases/latest`) lalu membandingkan nomor versinya. Tidak ada data lain yang dikirim.
 
 Konstanta untuk membandingkan varian:
 
@@ -107,15 +121,22 @@ Konstanta untuk membandingkan varian:
 ```
 project.yml          spesifikasi XcodeGen (sumber utama project Xcode)
 scripts/
-  make-dmg.sh        build rilis lalu dibungkus jadi DMG
+  test.sh            menjalankan semua tes otomatis
+  make-dmg.sh        tes, build rilis, lalu dibungkus jadi DMG
+  release.sh         memeriksa, membuat DMG, lalu menerbitkan rilis di GitHub
 Sources/
-  App/               titik awal app, app delegate, pemantau perubahan
+  App/               titik awal app, app delegate, timer jeda, pemantau perubahan
   Overlay/           window sudut, penggambaran, dan space khusus
-  MenuBar/           ikon menu bar, popover pengaturan, tombol nyala/mati custom
-  Settings/          pengaturan tersimpan dan buka otomatis saat login
+  MenuBar/           ikon menu bar, popover pengaturan, sambutan, tombol custom
+  HUD/               keterangan singkat di layar saat shortcut ditekan
+  Shortcuts/         shortcut keyboard global
+  Settings/          pengaturan tersimpan, jadwal jeda, buka otomatis saat login
+  Updates/           cek pembaruan dari GitHub
+Tests/               tes otomatis (Swift Testing)
 Resources/
   Info.plist         dibuat XcodeGen dari project.yml
   Assets.xcassets    ikon app
+.github/             build otomatis, formulir issue, template pull request
 ```
 
 ## Lisensi
