@@ -1,5 +1,32 @@
 # Catatan perubahan
 
+## 0.2.0
+
+### Baru
+
+- Shortcut keyboard dari app mana saja: `⌃⌥⌘R` menyalakan atau mematikan sudut, `⌃⌥⌘P` membuka pengaturan (juga saat ikon disembunyikan), `⌃⌥⌘+` dan `⌃⌥⌘−` mengubah radius. Tidak butuh izin Accessibility, dan bisa dimatikan.
+- Keterangan singkat di bagian bawah layar setiap kali shortcut atau klik kanan mengubah sudut.
+- Pilihan cepat radius: Kecil, Sedang, dan Besar.
+- Slider radius berhenti sebentar di ukuran bawaan (28 pt), disertai getaran halus di trackpad.
+- Jeda sementara selama 1 jam atau sampai jam 06.00 berikutnya. Sudut menyala lagi sendiri, dan ikon menu bar menunjukkan kapan jedanya selesai.
+- Pilih sudut mana yang melengkung: kiri, kanan, atau keduanya.
+- Cek pembaruan langsung di popover, dengan tombol unduh kalau ada versi baru. App hanya menghubungi GitHub saat tombolnya diklik.
+- Sambutan singkat saat app pertama kali dibuka.
+- Popover yang menutup sendiri saat kursor menjauh sekarang bisa dimatikan.
+
+### Perubahan
+
+- Tombol untuk mengembalikan radius ke ukuran bawaan diganti pilihan cepat radius.
+- Gambar laptop kecil di popover ikut menunjukkan sudut yang dipilih.
+
+### Untuk pengembang
+
+- Tes otomatis untuk nomor versi, jadwal jeda, bentuk lengkungan, dan pengaturan. Jalankan dengan `scripts/test.sh`.
+- GitHub menjalankan build dan tes untuk setiap push dan pull request.
+- Skrip DMG menjalankan tes dulu dan berhenti kalau ada yang gagal.
+- Skrip rilis `scripts/release.sh` yang memeriksa semuanya lalu menerbitkan rilis setelah dikonfirmasi.
+- Lisensi MIT, panduan kontribusi, formulir issue, dan template pull request.
+
 ## 0.1.1
 
 ### Baru
