@@ -101,3 +101,7 @@ Resources/
   Info.plist         dibuat XcodeGen dari project.yml
   Assets.xcassets    ikon app
 ```
+
+## Lisensi
+
+[MIT](LICENSE). Kamu boleh memakai, mengubah, dan membagikan kode ini, termasuk untuk keperluan komersial, asalkan keterangan hak cipta dan lisensinya tetap disertakan.
