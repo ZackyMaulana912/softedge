@@ -9,9 +9,23 @@ Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar
 - Lapisan hitam hanya di dua sudut bawah layar bawaan MacBook, tidak pernah di monitor eksternal
 - Bentuk lengkungan kontinu ala Apple (squircle), bukan busur lingkaran biasa
 - Sudut tetap terlihat saat berpindah desktop dengan swipe dan saat memakai app layar penuh
-- Popover di menu bar: tombol nyala/mati, slider radius sudut (8 sampai 40 pt) dengan pratinjau langsung dan tombol untuk kembali ke ukuran bawaan, buka otomatis saat login, sembunyikan ikon menu bar, versi app, dan tombol cek pembaruan
-- Klik kanan ikon menu bar untuk langsung menyalakan atau mematikan sudut tanpa membuka popover
-- Popover menutup sendiri kalau kursor menjauh selama 2 detik
+- Popover di menu bar dengan tombol nyala/mati dan slider radius sudut (8 sampai 40 pt) yang langsung terlihat di layar
+- Pilihan cepat radius: Kecil (18 pt), Sedang (28 pt), dan Besar (38 pt)
+- Pilih sudut mana yang melengkung: kiri, kanan, atau keduanya
+- Jeda sementara selama 1 jam atau sampai pagi (jam 06.00 berikutnya). Sudut menyala lagi sendiri, juga kalau Mac sempat sleep
+- Shortcut keyboard dari app mana saja, tanpa perlu izin Accessibility:
+
+  | Shortcut | Fungsi |
+  | --- | --- |
+  | `⌃⌥⌘R` | nyalakan atau matikan sudut |
+  | `⌃⌥⌘P` | buka atau tutup pengaturan, juga saat ikon disembunyikan |
+  | `⌃⌥⌘+` dan `⌃⌥⌘−` | perbesar atau perkecil radius |
+
+  Setiap shortcut memunculkan keterangan singkat di bagian bawah layar. Shortcut bisa dimatikan di pengaturan.
+- Klik kanan ikon menu bar untuk langsung menyalakan atau mematikan sudut tanpa membuka popover. Saat dijeda, ikonnya berubah dan klik kanan melanjutkan
+- Cek pembaruan langsung dari popover. App hanya menghubungi GitHub saat tombolnya diklik, tidak pernah diam-diam
+- Sambutan singkat saat app pertama kali dibuka
+- Popover menutup sendiri kalau kursor menjauh selama 2 detik. Bisa dimatikan
 - Popover memberi tahu kalau layar MacBook tidak terdeteksi, misalnya saat lid ditutup dan memakai monitor eksternal
 - Sudut dipasang ulang otomatis setelah Mac bangun dari sleep
 - Sangat ringan: sekitar 2 MB (sebagian besar untuk ikon app), CPU 0% saat diam, memori sekitar 15 MB saat mulai dan sekitar 35 MB setelah pengaturan dibuka
@@ -35,7 +49,9 @@ Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar
 
 App ini tidak muncul di Dock. Klik ikonnya di menu bar untuk mengubah pengaturan atau menutup app, atau klik kanan untuk langsung menyalakan atau mematikan sudut.
 
-Kalau ikon menu bar disembunyikan, buka lagi RoundedCorners dari Spotlight atau Launchpad untuk memunculkan pengaturannya.
+Saat pertama kali dibuka, pengaturannya muncul sendiri bersama sambutan singkat. Panelnya tetap terbuka sampai kamu klik **Mengerti**.
+
+Kalau ikon menu bar disembunyikan, tekan `⌃⌥⌘P` atau buka lagi RoundedCorners dari Spotlight atau Launchpad untuk memunculkan pengaturannya.
 
 Kalau menu bar penuh, macOS menyembunyikan ikon yang tidak muat di samping notch. Kalau ikonnya tidak kelihatan, tutup beberapa app menu bar lain.
 
