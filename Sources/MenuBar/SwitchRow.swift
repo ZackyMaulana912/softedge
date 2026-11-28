@@ -18,5 +18,9 @@ struct SwitchRow: View {
         }
         .toggleStyle(.switch)
         .controlSize(.small)
+        // The stretched label ends up as separate text, so VoiceOver gets a plain switch.
+        .accessibilityRepresentation {
+            Toggle(title, isOn: $isOn)
+        }
     }
 }

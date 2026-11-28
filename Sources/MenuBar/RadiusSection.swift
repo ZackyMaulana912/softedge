@@ -29,14 +29,10 @@ struct RadiusSection: View {
                 Text("\(Int(settings.radius)) pt")
                     .monospacedDigit()
                     .foregroundStyle(.secondary)
+                    // The slider below already reads out the value.
+                    .accessibilityHidden(true)
             }
-            Slider(
-                value: Binding(
-                    get: { settings.radius },
-                    set: { setRadiusFromSlider($0) }
-                ),
-                in: AppSettings.radiusRange
-            ) {
+            Slider(value: radiusBinding, in: AppSettings.radiusRange) {
                 Text("Radius sudut")
             } minimumValueLabel: {
                 Text("\(Int(AppSettings.radiusRange.lowerBound))")
@@ -44,6 +40,13 @@ struct RadiusSection: View {
                 Text("\(Int(AppSettings.radiusRange.upperBound))")
             }
             .labelsHidden()
+            // Without this, VoiceOver reads the 8 and 40 at the ends as buttons.
+            .accessibilityRepresentation {
+                Slider(value: radiusBinding, in: AppSettings.radiusRange, step: 1) {
+                    Text("Radius sudut")
+                }
+                .accessibilityValue("\(Int(settings.radius)) poin")
+            }
             .font(.caption)
             .foregroundStyle(.secondary)
 
@@ -61,6 +64,13 @@ struct RadiusSection: View {
         }
         .disabled(!settings.isEnabled)
         .opacity(settings.isEnabled ? 1 : 0.45)
+    }
+
+    private var radiusBinding: Binding<Double> {
+        Binding(
+            get: { settings.radius },
+            set: { setRadiusFromSlider($0) }
+        )
     }
 
     /// The slider sticks a little at the default size and taps the trackpad
