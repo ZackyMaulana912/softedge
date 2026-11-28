@@ -1,19 +1,6 @@
 import Foundation
 import Testing
 
-/// Keeps settings in memory only, so the tests never read or change real ones.
-private final class MemoryStore: SettingsStore {
-    var values: [String: Any] = [:]
-
-    func object(forKey key: String) -> Any? {
-        values[key]
-    }
-
-    func set(_ value: Any?, forKey key: String) {
-        values[key] = value
-    }
-}
-
 @MainActor
 struct AppSettingsTests {
     private func withStore(_ body: (MemoryStore) throws -> Void) rethrows {

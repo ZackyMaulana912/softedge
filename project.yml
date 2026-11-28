@@ -55,6 +55,7 @@ targets:
       - Sources/Settings/AppSettings.swift
       - Sources/Settings/RadiusPreset.swift
       - Sources/Settings/SettingsStore.swift
+      - Sources/Settings/SettingsSnapshot.swift
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.zackymaulana.roundedcorners.tests
