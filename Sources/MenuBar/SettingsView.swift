@@ -4,6 +4,7 @@ struct SettingsView: View {
     @Bindable var settings: AppSettings
     let status: OverlayStatus
     let onQuit: () -> Void
+    let onReopen: () -> Void
 
     @State private var launchAtLogin = LaunchAtLogin.isEnabled
     @State private var launchMessage: String?
@@ -90,6 +91,8 @@ struct SettingsView: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
+
+            SettingsFileRow(settings: settings, reopen: onReopen)
         }
     }
 

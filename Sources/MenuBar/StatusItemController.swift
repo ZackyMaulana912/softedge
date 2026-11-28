@@ -24,7 +24,13 @@ final class StatusItemController: NSObject, NSPopoverDelegate {
         item.button?.sendAction(on: [.leftMouseUp, .rightMouseUp])
         statusItem = item
 
-        let host = NSHostingController(rootView: SettingsView(settings: settings, status: status, onQuit: { NSApp.terminate(nil) }))
+        let view = SettingsView(
+            settings: settings,
+            status: status,
+            onQuit: { NSApp.terminate(nil) },
+            onReopen: { [weak self] in self?.showSettings() }
+        )
+        let host = NSHostingController(rootView: view)
         host.sizingOptions = .preferredContentSize
         popover.contentViewController = host
         popover.behavior = .transient
