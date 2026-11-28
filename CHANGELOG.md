@@ -13,6 +13,8 @@
 - Cek pembaruan langsung di popover, dengan tombol unduh kalau ada versi baru. App hanya menghubungi GitHub saat tombolnya diklik.
 - Sambutan singkat saat app pertama kali dibuka.
 - Popover yang menutup sendiri saat kursor menjauh sekarang bisa dimatikan.
+- Ekspor dan impor pengaturan ke file, misalnya untuk dibawa ke Mac lain.
+- Dukungan VoiceOver: semua switch, slider, dan tombol punya nama yang jelas, dan keterangan di layar ikut dibacakan.
 
 ### Perubahan
 
@@ -21,7 +23,7 @@
 
 ### Untuk pengembang
 
-- Tes otomatis untuk nomor versi, jadwal jeda, bentuk lengkungan, dan pengaturan. Jalankan dengan `scripts/test.sh`.
+- Tes otomatis untuk nomor versi, jadwal jeda, bentuk lengkungan, pengaturan, dan file pengaturan. Jalankan dengan `scripts/test.sh`.
 - GitHub menjalankan build dan tes untuk setiap push dan pull request.
 - Skrip DMG menjalankan tes dulu dan berhenti kalau ada yang gagal.
 - Skrip rilis `scripts/release.sh` yang memeriksa semuanya lalu menerbitkan rilis setelah dikonfirmasi.

@@ -27,6 +27,8 @@ Caranya dengan menggambar lapisan hitam pekat di dua sudut bawah layar. Di layar
 - Klik kanan ikon menu bar untuk langsung menyalakan atau mematikan sudut tanpa membuka popover. Saat dijeda, ikonnya berubah dan klik kanan melanjutkan
 - Cek pembaruan langsung dari popover. App hanya menghubungi GitHub saat tombolnya diklik, tidak pernah diam-diam
 - Sambutan singkat saat app pertama kali dibuka
+- Ekspor dan impor pengaturan ke file JSON, misalnya untuk dibawa ke Mac lain. Jeda dan buka otomatis saat login tidak ikut, karena hanya berlaku di Mac ini
+- Bisa dipakai dengan VoiceOver: setiap tombol dan switch punya nama, dan keterangan di layar saat shortcut ditekan ikut dibacakan
 - Popover menutup sendiri kalau kursor menjauh selama 2 detik. Bisa dimatikan
 - Popover memberi tahu kalau layar MacBook tidak terdeteksi, misalnya saat lid ditutup dan memakai monitor eksternal
 - Sudut dipasang ulang otomatis setelah Mac bangun dari sleep
