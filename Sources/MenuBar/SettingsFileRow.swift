@@ -1,6 +1,7 @@
 import SwiftUI
 
-/// Buttons to save the settings to a file, with a note about the last result.
+/// Buttons to save the settings to a file and load them back,
+/// with a note about the last result.
 struct SettingsFileRow: View {
     let settings: AppSettings
     /// The popover closes while a file dialog is open, this brings it back.
@@ -19,6 +20,12 @@ struct SettingsFileRow: View {
                 }
                 .controlSize(.small)
                 .help("Simpan pengaturan ke file")
+                Button("Impor...") {
+                    note = SettingsFile.importFile(into: settings) ?? note
+                    reopen()
+                }
+                .controlSize(.small)
+                .help("Muat pengaturan dari file")
             }
             if let note {
                 Text(note)
