@@ -28,6 +28,16 @@ enum AppShortcut: UInt32, CaseIterable {
         }
     }
 
+    /// The keys in words, since screen readers often skip the symbols.
+    var spokenKeys: String {
+        switch self {
+        case .toggle: return "Control Option Command R"
+        case .settings: return "Control Option Command P"
+        case .radiusUp: return "Control Option Command plus"
+        case .radiusDown: return "Control Option Command minus"
+        }
+    }
+
     var title: String {
         switch self {
         case .toggle: return "nyalakan atau matikan sudut"

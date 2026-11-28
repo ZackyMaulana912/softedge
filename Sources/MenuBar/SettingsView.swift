@@ -75,6 +75,9 @@ struct SettingsView: View {
                                 .monospaced()
                             Text(shortcut.title)
                         }
+                        .accessibilityElement(children: .ignore)
+                        .accessibilityLabel("\(shortcut.spokenKeys): \(shortcut.title)")
+                        .accessibilityAddTraits(.isStaticText)
                     }
                 }
                 .font(.caption)

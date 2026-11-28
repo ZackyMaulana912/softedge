@@ -43,7 +43,8 @@ struct CornerToggle: View {
         }
         .buttonStyle(.plain)
         .accessibilityRepresentation {
-            Toggle("Sudut Melengkung", isOn: $isOn)
+            // While paused the switch reads as off, so say why.
+            Toggle(subtitle.map { "Sudut Melengkung, \($0.lowercased())" } ?? "Sudut Melengkung", isOn: $isOn)
         }
     }
 }
