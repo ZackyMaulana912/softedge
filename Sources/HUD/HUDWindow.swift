@@ -59,6 +59,16 @@ final class HUDWindow {
         panel.alphaValue = 1
         panel.orderFrontRegardless()
 
+        // The HUD never takes focus, so VoiceOver would not notice it on its own.
+        NSAccessibility.post(
+            element: NSApp as Any,
+            notification: .announcementRequested,
+            userInfo: [
+                .announcement: text,
+                .priority: NSAccessibilityPriorityLevel.high.rawValue,
+            ]
+        )
+
         hideTask?.cancel()
         hideTask = Task { @MainActor [weak self] in
             try? await Task.sleep(for: Self.visibleFor)
